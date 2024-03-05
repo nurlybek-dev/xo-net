@@ -52,6 +52,14 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libsdl2-dev
+      else if: matrix.os == 'windows-latest'
+      run: |
+        # Download and extract SDL2 for Windows
+        Invoke-WebRequest -Uri https://www.libsdl.org/release/SDL2-devel-2.0.16-VC.zip -OutFile SDL2.zip
+        Expand-Archive -Path SDL2.zip -DestinationPath C:\SDL2
+
+        # Add SDL2/bin directory to PATH
+        $env:PATH = "C:\SDL2\SDL2-2.0.16\VC\SDL2\bin;" + $env:PATH
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
