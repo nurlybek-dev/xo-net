@@ -1,15 +1,3 @@
-// Dear ImGui: standalone example application for SDL2 + SDL_Renderer
-// (SDL is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
-
-// Learn about Dear ImGui:
-// - FAQ                  https://dearimgui.com/faq
-// - Getting Started      https://dearimgui.com/getting-started
-// - Documentation        https://dearimgui.com/docs (same as your local docs/ folder).
-// - Introduction, links and more at the top of imgui.cpp
-
-// Important to understand: SDL_Renderer is an _optional_ component of SDL2.
-// For a multi-platform app consider using e.g. SDL+DirectX on Windows and SDL+OpenGL on Linux/OSX.
-
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
@@ -49,9 +37,9 @@ int main(int, char**)
         SDL_Log("Error creating SDL_Renderer!");
         return 0;
     }
-    //SDL_RendererInfo info;
-    //SDL_GetRendererInfo(renderer, &info);
-    //SDL_Log("Current SDL_Renderer: %s", info.name);
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(renderer, &info);
+    SDL_Log("Current SDL_Renderer: %s", info.name);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -70,6 +58,7 @@ int main(int, char**)
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     // Main loop
+    char str0[128] = "Hello, world!";
     bool done = false;
     while (!done)
     {
@@ -78,8 +67,10 @@ int main(int, char**)
         {
             ImGui_ImplSDL2_ProcessEvent(&event);
             if (event.type == SDL_QUIT)
+                printf("SDL_WINDOWEVENT_QUIT\n"),
                 done = true;
             if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
+                printf("SDL_WINDOWEVENT_CLOSE\n"),
                 done = true;
         }
 
@@ -87,6 +78,17 @@ int main(int, char**)
         ImGui_ImplSDLRenderer2_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
+
+        const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x, main_viewport->WorkPos.y), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(550, main_viewport->Size.y), ImGuiCond_FirstUseEver);
+        ImGui::Begin("Chat");
+        ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
+        ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+        ImGui::Spacing();
+        ImGui::InputText("input text", str0, IM_ARRAYSIZE(str0));
+
+        ImGui::End();
 
         // Rendering
         ImGui::Render();

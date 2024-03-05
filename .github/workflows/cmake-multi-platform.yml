@@ -38,7 +38,7 @@ jobs:
             !${{env.VCPKG_ROOT}}/packages
             !${{env.VCPKG_ROOT}}/downloads
             !${{env.VCPKG_ROOT}}/installed
-          key: centurion-macos-vcpkg-${{hashFiles('vcpkg.json')}}
+          key: macos-vcpkg-${{hashFiles('vcpkg.json')}}
 
       - name: Install Vcpkg
         if: steps.restore-vcpkg-artifacts.outputs.cache-hit != 'true'
@@ -60,14 +60,6 @@ jobs:
 
       - name: Compile
         run: ninja -C build
-
-      - name: Run unit tests
-        working-directory: ./build/test/unit-tests
-        run: ./centurion-tests
-
-      - name: Run mock tests
-        working-directory: ./build/test/mocked-tests
-        run: ./centurion-mocks
 
   ubuntu:
     runs-on: ubuntu-latest
@@ -139,7 +131,7 @@ jobs:
             !${{env.VCPKG_ROOT}}/packages
             !${{env.VCPKG_ROOT}}/downloads
             !${{env.VCPKG_ROOT}}/installed
-          key: centurion-ubuntu-vcpkg-${{hashFiles('vcpkg.json')}}
+          key: ubuntu-vcpkg-${{hashFiles('vcpkg.json')}}
 
       - name: Install Vcpkg
         if: steps.restore-vcpkg-artifacts.outputs.cache-hit != 'true'
@@ -261,14 +253,6 @@ jobs:
       - name: Compile
         run: ninja -C build
 
-      - name: Run mocked tests
-        working-directory: ./build/test/mocked-tests
-        run: ./centurion-mocks
-
-      - name: Run unit tests
-        working-directory: ./build/test/unit-tests
-        run: ./centurion-tests
-
   windows:
     runs-on: windows-latest
     if: contains(github.event.head_commit.message, '[skip-ci]') == false
@@ -318,7 +302,7 @@ jobs:
             !${{env.VCPKG_ROOT}}\packages
             !${{env.VCPKG_ROOT}}\downloads
             !${{env.VCPKG_ROOT}}\installed
-          key: centurion-windows-vcpkg-${{hashFiles('vcpkg.json')}}
+          key: windows-vcpkg-${{hashFiles('vcpkg.json')}}
 
       - name: Install Vcpkg
         if: steps.restore-vcpkg-artifacts.outputs.cache-hit != 'true'
@@ -373,8 +357,3 @@ jobs:
 
       - name: Compile
         run: ninja -C build
-
-      - name: Run mocked tests
-        shell: cmd
-        working-directory: ./build/test/mocked-tests
-        run: centurion-mocks

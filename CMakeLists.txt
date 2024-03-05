@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
+
+if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+endif ()
+
 project(xo VERSION 0.1.0 LANGUAGES C CXX)
+
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(CTest)
 enable_testing()
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(SDL2 REQUIRED sdl2)
-# pkg_search_module(SDL2_image REQUIRED)
-# pkg_search_module(SDL2_ttf REQUIRED)
-# pkg_search_module(SDL2_net REQUIRED)
-# pkg_search_module(SDL2_gfx REQUIRED)
-# pkg_search_module(SDL2_mixer REQUIRED)
+find_package(SDL2 REQUIRED)
 
 include_directories(imgui)
 include_directories(imgui/backends)
@@ -32,4 +33,5 @@ target_link_libraries(xo ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LI
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
 include(CPack)
