@@ -82,5 +82,5 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: build-artifacts
+        name: build-artifacts-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}
         path: ${{ steps.strings.outputs.build-output-dir }}
