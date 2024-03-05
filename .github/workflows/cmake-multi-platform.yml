@@ -100,6 +100,9 @@ jobs:
       with:
         cmake-version: 3.21
 
+    - name: Check CMake version
+      run: cmake --version
+
     - name: Install SDL2
       run: |
         brew update
