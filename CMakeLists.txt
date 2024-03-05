@@ -6,6 +6,7 @@ enable_testing()
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2)
+find_package(SDL2 REQUIRED)
 # pkg_search_module(SDL2_image REQUIRED)
 # pkg_search_module(SDL2_ttf REQUIRED)
 # pkg_search_module(SDL2_net REQUIRED)
