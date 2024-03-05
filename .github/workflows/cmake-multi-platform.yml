@@ -26,6 +26,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         build_type: [Release]
         c_compiler: [gcc, clang, cl]
+        cxx_standart: [11, 23]
         include:
           - os: ubuntu-latest
             c_compiler: gcc
@@ -73,6 +74,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DCMAKE_CXX_STANDARD=${{ matrix.cxx_standart }}
         -S ${{ github.workspace }}
 
     - name: Build
