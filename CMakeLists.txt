@@ -1,17 +1,16 @@
-cmake_minimum_required(VERSION 3.21)
-
-if (DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-endif ()
-
+cmake_minimum_required(VERSION 3.20)
 project(xo VERSION 0.1.0 LANGUAGES C CXX)
-
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(CTest)
 enable_testing()
 
-find_package(SDL2 REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(SDL2 REQUIRED sdl2)
+# pkg_search_module(SDL2_image REQUIRED)
+# pkg_search_module(SDL2_ttf REQUIRED)
+# pkg_search_module(SDL2_net REQUIRED)
+# pkg_search_module(SDL2_gfx REQUIRED)
+# pkg_search_module(SDL2_mixer REQUIRED)
 
 include_directories(imgui)
 include_directories(imgui/backends)
